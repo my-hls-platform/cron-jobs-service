@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v3
+        uses: pnpm/action-setup@v4
         with:
           version: 11
 
@@ -27,11 +27,13 @@ jobs:
         run: pnpm install
 
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: pnpm prisma generate
+        env:
+          DATABASE_URL: "mysql://user:password@localhost:3306/dummy"
 
       - name: Build TypeScript
         run: |
-          npx esbuild src/index.ts --bundle --platform=node --target=node22 --external:@aws-sdk/* --external:@prisma/client --outfile=dist/index.js
+          pnpm exec esbuild src/index.ts --bundle --platform=node --target=node22 --external:@aws-sdk/* --external:@prisma/client --outfile=dist/index.js
 
       - name: Package Lambda (Zip)
         run: |
