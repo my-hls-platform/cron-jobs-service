@@ -29,7 +29,7 @@ jobs:
       - name: Generate Prisma Client
         run: pnpm prisma generate
         env:
-          DATABASE_URL: 'mysql://user:password@localhost:3306/dummy'
+          DATABASE_URL: "mysql://user:password@localhost:3306/dummy"
 
       - name: Build TypeScript
         run: |
@@ -37,10 +37,9 @@ jobs:
 
       - name: Package Lambda (Zip)
         run: |
-          ENGINE_PATH=$(find node_modules -name "libquery_engine-rhel-openssl-3.0.x.so.node" | head -n 1)
-          cp "$ENGINE_PATH" dist/
-          SCHEMA_PATH=$(find node_modules -path "*/.prisma/client/schema.prisma" | head -n 1)
-          cp "$SCHEMA_PATH" dist/
+          find . -type f -name "*query_engine*.node" -exec cp {} dist/ \;
+          find . -type f -name "schema.prisma" -exec cp {} dist/ \;
+          ls -la dist/
           cd dist
           zip -r function.zip .
           mv function.zip ../
