@@ -1,0 +1,33 @@
+{
+  "name": "cron-jobs-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.9.0",
+      "onFail": "download"
+    }
+  },
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1077.0",
+    "@aws-sdk/client-s3": "^3.1077.0",
+    "@prisma/client": "^7.8.0",
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.162",
+    "@types/node": "^26.0.1",
+    "esbuild": "^0.28.1",
+    "prisma": "^7.8.0",
+    "typescript": "^6.0.3"
+  }
+}
