@@ -29,15 +29,18 @@ jobs:
       - name: Generate Prisma Client
         run: pnpm prisma generate
         env:
-          DATABASE_URL: "mysql://user:password@localhost:3306/dummy"
+          DATABASE_URL: 'mysql://user:password@localhost:3306/dummy'
 
       - name: Build TypeScript
         run: |
-          pnpm exec esbuild src/index.ts --bundle --platform=node --target=node22 --external:@aws-sdk/* --external:@prisma/client --outfile=dist/index.js
+          pnpm exec esbuild src/index.ts --bundle --platform=node --target=node22 --external:@aws-sdk/* --outfile=dist/index.js
 
       - name: Package Lambda (Zip)
         run: |
-          cp -r node_modules/.prisma/client/* dist/
+          ENGINE_PATH=$(find node_modules -name "libquery_engine-rhel-openssl-3.0.x.so.node" | head -n 1)
+          cp "$ENGINE_PATH" dist/
+          SCHEMA_PATH=$(find node_modules -path "*/.prisma/client/schema.prisma" | head -n 1)
+          cp "$SCHEMA_PATH" dist/
           cd dist
           zip -r function.zip .
           mv function.zip ../
